@@ -1,6 +1,10 @@
-class CreamYoung : Creme() {
+import martaranowicz.com.Creme.CremeSize
+import martaranowicz.com.Creme.CremeSizeEnums
+
+class CreamYoung(override val cremeSizeEnums: CremeSizeEnums) : CremeSize(cremeSizeEnums){
     override fun apply() {
         println("Skóra młoda")
+        println(cremeSizeEnums)
     }
 
     override fun printDescription() {

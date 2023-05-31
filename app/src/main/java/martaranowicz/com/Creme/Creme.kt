@@ -1,5 +1,11 @@
+import martaranowicz.com.Creme.CremeSizeEnums
+
 abstract class Creme {
-    abstract fun apply()
+    abstract val cremeSizeEnums: CremeSizeEnums
+
+    open fun apply(){
+        print("krem")
+    }
     open fun printDescription() {
         println("To jest krem")
     }

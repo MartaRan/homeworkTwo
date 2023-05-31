@@ -13,7 +13,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
+import martaranowicz.com.Creme.CremeSize
+import martaranowicz.com.Creme.CremeSizeEnums
 import martaranowicz.com.ui.theme.TheBasicCremeTheme
 import java.util.*
 
@@ -45,48 +48,65 @@ fun screen() {
 
 fun main() {
     val reader = Scanner(System.`in`)//służy do obsługi inputu ktory wpisze uzytkownik
-//Pętla będzie się wykonywać tak długo do póki będzie spełniony warunek chyba że uzytkownik wpisze q i pętla zostanie przerwana
-    while (true) {
+//stan magazynu
+    var youngCreamQuantity = 50
+    var matureCreamQuantity = 100
+    var wrinklesCreamQuantity = 70
+
+    while (true) {  //Pętla będzie się wykonywać tak długo do póki będzie spełniony warunek chyba że uzytkownik wpisze q i pętla zostanie przerwana
+        println("---------------------------------------------")
         println("Podaj swój wiek (lub wpisz 'q' aby zakończyć): ")
         val input = reader.next() //odczytuje wprowadzony przez użytkonika ciąg znaków, który zostaje przypisany do zmiennej input
 //Sprawdza czy wprowadzono tekst po zmniejszeniu liter równy jest q i jeśi się takstanie to program przejdzie lini 54 i zakonczy program - wielkośc liter nie ma znaczenia
+
         if (input.lowercase() == "q") {
             break
         }
+        println("Wpisz wielkość kremu jaki chcesz zakupić:")
+        println("Small --> S")
+        println("Medium --> M")
+        println("Large --> L")
+        val inputSize = reader.next().lowercase()
+        val size = when (inputSize) {
+            "s" -> CremeSizeEnums.SMALL
+            "m" -> CremeSizeEnums.MEDIUM
+            "l" -> CremeSizeEnums.LARGE
+            else -> {
+                println("Nie podałeś poprawnego rozmiaru, wybraliśmy za Ciebie rozmiar Small")
+                CremeSizeEnums.SMALL
+            }
+        }
+
 
         val age = input.toIntOrNull()// konwertuje wprowadzony test na liczbę całkowitą, jeśli się to powiedzie,
                                     //to liczab zostaje przypisana to zmiennej age, a jesli nie to zostanie potraktowana jako null
         if (age != null) {
 
             val cream = when {
-                age in 0..25 -> CreamYoung()
-                age in 25..35 -> MatureSkin()
-                else -> CreamForWrinkles()
+                age in 0..25 -> {
+                    youngCreamQuantity--
+                    CreamYoung(size)}
+                age in 25..35 -> {
+                    matureCreamQuantity--
+                    MatureSkin(size)}
+                else -> {
+                    wrinklesCreamQuantity--
+                    CreamForWrinkles(size)}
             }
 
             println("Nakładaj krem:")
             cream.apply()
             cream.printDescription()
+            println("Stan magazynu:")
+            println("Krem skóra młoda: $youngCreamQuantity")
+            println("Krem skóra dojrzała: $matureCreamQuantity")
+            println("Krem skóra wymagająca: $wrinklesCreamQuantity")
         }
         else {
             println("Musisz podać wiek jako liczbę całkowitą")
             continue
         }
-
-        }
-
-
-//        val age = input.toInt()
-//
-//        val cream = when {
-//            age in 0..25 -> CreamYoung()
-//            age in 25..35 -> MatureSkin()
-//            else -> CreamForWrinkles()
-//        }
-//
-//        println("Nakładaj krem:")
-//        cream.apply()
-//        cream.printDescription()
+    }
     }
 
 
